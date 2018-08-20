@@ -3,6 +3,7 @@ package com.lgdias.testexbrain.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 import com.lgdias.testexbrain.dto.VendedorRankingDTO;
 import com.lgdias.testexbrain.exception.DataInvalidaException;
@@ -14,12 +15,12 @@ import com.lgdias.testexbrain.repository.VendaRepository;
 import com.lgdias.testexbrain.repository.VendedorRepository;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -81,7 +82,8 @@ public class VendedorServiceImplTest {
 
     List<Venda> vendas = Arrays.asList(venda1, venda2, venda3, venda4);
 
-    doReturn(vendas).when(vendaRepository).findAllByDataBetween(any(Date.class), any(Date.class));
+    doReturn(vendas).when(vendaRepository)
+        .findAllByDataBetween(any(LocalDate.class), any(LocalDate.class));
 
     List<VendedorRankingDTO> topBySalesInPeriod = vendedorService
         .recuperarRankingPorVendasNoPeriodo(10L, initialDate, finalDate);
@@ -136,7 +138,8 @@ public class VendedorServiceImplTest {
 
     List<Venda> vendas = Arrays.asList(venda1, venda2, venda3, venda4);
 
-    doReturn(vendas).when(vendaRepository).findAllByDataBetween(any(Date.class), any(Date.class));
+    doReturn(vendas).when(vendaRepository)
+        .findAllByDataBetween(any(LocalDate.class), any(LocalDate.class));
 
     List<VendedorRankingDTO> topBySalesInPeriod = vendedorService
         .recuperarRankingPorVendasNoPeriodo(10L, initialDate, finalDate);
@@ -156,6 +159,26 @@ public class VendedorServiceImplTest {
     LocalDate finalDate = LocalDate.of(2018, 8, 1);
 
     vendedorService.recuperarRankingPorVendasNoPeriodo(10L, initialDate, finalDate);
+  }
+
+  @Test
+  public void salvar_deveRetornarVendedorComId() {
+    when(vendedorRepository.save(any(Vendedor.class))).then((Answer<Vendedor>) invocationOnMock -> {
+      Vendedor argument = invocationOnMock.getArgument(0);
+      if (argument != null) {
+        argument.setId(1L);
+      }
+      return argument;
+    });
+
+    Vendedor vendedor = new VendedorBuilder()
+        .nome("Luis Gustavo")
+        .build();
+
+    Vendedor vendedorSalvo = vendedorService.salvar(vendedor);
+
+    assertThat(vendedorSalvo.getId()).isNotNull();
+    assertThat(vendedorSalvo.getNome()).isEqualTo(vendedor.getNome());
   }
 
 }
