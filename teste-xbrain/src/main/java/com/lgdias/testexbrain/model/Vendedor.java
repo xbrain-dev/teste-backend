@@ -18,7 +18,7 @@ public class Vendedor {
   private String nome;
 
   @OneToMany(mappedBy = "vendedor")
-  List<Venda> vendas;
+  private List<Venda> vendas;
 
   public Long getId() {
     return id;

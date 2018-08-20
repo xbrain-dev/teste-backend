@@ -1,5 +1,6 @@
 package com.lgdias.testexbrain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ public class Venda {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private LocalDate data;
 
   private Double valor;

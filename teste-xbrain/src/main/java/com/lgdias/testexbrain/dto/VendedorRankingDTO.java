@@ -4,6 +4,7 @@ import com.lgdias.testexbrain.model.Vendedor;
 import java.util.Objects;
 
 public class VendedorRankingDTO {
+
   private Double valor;
 
   private Vendedor vendedor;
@@ -13,11 +14,11 @@ public class VendedorRankingDTO {
     this.vendedor = vendedor;
   }
 
-  public Double getClassificacao() {
+  public Double getValor() {
     return valor;
   }
 
-  public void setClassificacao(Double valor) {
+  public void setValor(Double valor) {
     this.valor = valor;
   }
 
