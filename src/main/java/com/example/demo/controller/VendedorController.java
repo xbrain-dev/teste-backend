@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Venda;
 import com.example.demo.model.Vendedor;
 import com.example.demo.repository.VendedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +68,9 @@ public class VendedorController {
     public void deleteVendedor(@PathVariable("id") Long id) {
         vendedorRepository.deleteById(id);
     }
+
+
+
+
 
 }

@@ -1,8 +1,7 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -12,8 +11,7 @@ public class Venda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dataVenda = new Date();
+    private LocalDate dataVenda = LocalDate.now();
 
     private Double valor;
 
@@ -24,7 +22,7 @@ public class Venda {
 
     }
 
-    public Venda(Long id, Date dataVenda, Double valor, Vendedor vendedor) {
+    public Venda(Long id, LocalDate dataVenda, Double valor, Vendedor vendedor) {
         this.id = id;
         this.dataVenda = dataVenda;
         this.valor = valor;
@@ -39,11 +37,11 @@ public class Venda {
         this.id = id;
     }
 
-    public Date getDataVenda() {
+    public LocalDate getDataVenda() {
         return dataVenda;
     }
 
-    public void setDataVenda(Date dataVenda) {
+    public void setDataVenda(LocalDate dataVenda) {
         this.dataVenda = dataVenda;
     }
 
