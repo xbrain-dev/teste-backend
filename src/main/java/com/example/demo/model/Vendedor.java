@@ -21,38 +21,37 @@ public class Vendedor {
     @JsonIgnore
     private List<Venda> vendas;
 
-
     public Vendedor() {
 
     }
 
     public Vendedor(Long id, String nome, List<Venda> vendas) {
-        this.id = id;
-        this.nome = nome;
-        this.vendas = vendas;
+      this.id = id;
+      this.nome = nome;
+      this.vendas = vendas;
     }
 
     public Long getId() {
-        return id;
+      return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+      this.id = id;
     }
 
     public String getNome() {
-        return nome;
+      return nome;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+      this.nome = nome;
     }
 
     public List<Venda> getVendas() {
-        return vendas;
+      return vendas;
     }
 
     public void setVendas(List<Venda> vendas) {
-        this.vendas = vendas;
+      this.vendas = vendas;
     }
 }

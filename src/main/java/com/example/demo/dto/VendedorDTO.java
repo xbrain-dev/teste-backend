@@ -13,23 +13,23 @@ public class VendedorDTO {
     }
 
     public VendedorDTO(Vendedor vendedor, Double valor) {
-        this.vendedor = vendedor;
-        this.valor = valor;
+      this.vendedor = vendedor;
+      this.valor = valor;
     }
 
     public Vendedor getVendedor() {
-        return vendedor;
+      return vendedor;
     }
 
     public void setVendedor(Vendedor vendedor) {
-        this.vendedor = vendedor;
+      this.vendedor = vendedor;
     }
 
     public Double getValor() {
-        return valor;
+      return valor;
     }
 
     public void setValor(Double valor) {
-        this.valor = valor;
+      this.valor = valor;
     }
 }

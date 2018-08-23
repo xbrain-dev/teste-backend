@@ -1,8 +1,8 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 public class Venda {
@@ -16,6 +16,7 @@ public class Venda {
     private Double valor;
 
     @ManyToOne
+    @NotNull
     private Vendedor vendedor;
 
     public Venda() {
@@ -23,42 +24,42 @@ public class Venda {
     }
 
     public Venda(Long id, LocalDate dataVenda, Double valor, Vendedor vendedor) {
-        this.id = id;
-        this.dataVenda = dataVenda;
-        this.valor = valor;
-        this.vendedor = vendedor;
+      this.id = id;
+      this.dataVenda = dataVenda;
+      this.valor = valor;
+      this.vendedor = vendedor;
     }
 
     public Long getId() {
-        return id;
+      return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+      this.id = id;
     }
 
     public LocalDate getDataVenda() {
-        return dataVenda;
+      return dataVenda;
     }
 
     public void setDataVenda(LocalDate dataVenda) {
-        this.dataVenda = dataVenda;
+      this.dataVenda = dataVenda;
     }
 
     public Double getValor() {
-        return valor;
+      return valor;
     }
 
     public void setValor(Double valor) {
-        this.valor = valor;
+      this.valor = valor;
     }
 
     public Vendedor getVendedor() {
-        return vendedor;
+      return vendedor;
     }
 
     public void setVendedor(Vendedor vendedor) {
-        this.vendedor = vendedor;
+      this.vendedor = vendedor;
     }
 
 }
