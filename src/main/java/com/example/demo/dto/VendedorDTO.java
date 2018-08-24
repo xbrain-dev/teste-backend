@@ -4,32 +4,32 @@ import com.example.demo.model.Vendedor;
 
 public class VendedorDTO {
 
-    Vendedor vendedor;
+  Vendedor vendedor;
 
-    Double valor;
+  Double valor;
 
-    public VendedorDTO() {
+  public VendedorDTO() {
 
-    }
+  }
 
-    public VendedorDTO(Vendedor vendedor, Double valor) {
-      this.vendedor = vendedor;
-      this.valor = valor;
-    }
+  public VendedorDTO(Vendedor vendedor, Double valor) {
+    this.vendedor = vendedor;
+    this.valor = valor;
+  }
 
-    public Vendedor getVendedor() {
-      return vendedor;
-    }
+  public Vendedor getVendedor() {
+    return vendedor;
+  }
 
-    public void setVendedor(Vendedor vendedor) {
-      this.vendedor = vendedor;
-    }
+  public void setVendedor(Vendedor vendedor) {
+    this.vendedor = vendedor;
+  }
 
-    public Double getValor() {
-      return valor;
-    }
+  public Double getValor() {
+    return valor;
+  }
 
-    public void setValor(Double valor) {
-      this.valor = valor;
-    }
+  public void setValor(Double valor) {
+    this.valor = valor;
+  }
 }

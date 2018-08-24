@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface VendaRepository extends JpaRepository<Venda, Long> {
 
-    Optional<Venda> findById(Long id);
+  Optional<Venda> findById(Long id);
 
-    List<Venda> findAllByDataVendaBetween(LocalDate dateStart, LocalDate dateEnd);
+  List<Venda> findAllByDataVendaBetween(LocalDate dateStart, LocalDate dateEnd);
 
 }

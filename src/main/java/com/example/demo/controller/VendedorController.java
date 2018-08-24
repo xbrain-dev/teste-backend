@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.exceptions.VendedorSemNomeException;
 import com.example.demo.model.Vendedor;
 import com.example.demo.repository.VendedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,65 +14,68 @@ import java.util.Optional;
 @RequestMapping("/vendedores")
 public class VendedorController {
 
-    @Autowired
-    public VendedorRepository vendedorRepository;
+  @Autowired
+  public VendedorRepository vendedorRepository;
 
-    /**
-     * Recupera todas as vendas do repository.
-     *
-     * @return
-     */
-    @GetMapping
-    public List<Vendedor> getAllVendedor() {
-      List<Vendedor> vendedores = vendedorRepository.findAll();
-      return vendedores;
-    }
+  /**
+   * Recupera todas as vendas do repository.
+   *
+   * @return
+   */
+  @GetMapping
+  public List<Vendedor> getAllVendedor() {
+    List<Vendedor> vendedores = vendedorRepository.findAll();
+    return vendedores;
+  }
 
-    /**
-     * Recupera o vendedor pelo id do vendedor.
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("/{id}")
-    public Optional<Vendedor> getVendedor(@PathVariable("id") Long id) {
-      Optional<Vendedor> vendedor = vendedorRepository.findById(id);
-      return vendedor;
-    }
+  /**
+   * Recupera o vendedor pelo id do vendedor.
+   *
+   * @param id
+   * @return
+   */
+  @GetMapping("/{id}")
+  public Optional<Vendedor> getVendedor(@PathVariable("id") Long id) {
+    Optional<Vendedor> vendedor = vendedorRepository.findById(id);
+    return vendedor;
+  }
 
-    /**
-     * Salva o vendedor no repository.
-     *
-     * @param vendedor
-     * @return
-     */
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Vendedor saveVendedor(@RequestBody Vendedor vendedor) {
-      return vendedorRepository.save(vendedor);
+  /**
+   * Salva o vendedor no repository.
+   *
+   * @param vendedor
+   * @return
+   */
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public Vendedor saveVendedor(@RequestBody Vendedor vendedor) throws VendedorSemNomeException {
+    if (vendedor.getNome() == null) {
+      throw new VendedorSemNomeException("Esse vendedor não pode ser cadastrado por não ter nome");
     }
+    return vendedorRepository.save(vendedor);
+  }
 
-    /**
-     * Atualiza o objeto pelo id no repository.
-     *
-     * @param id
-     * @param vendedor
-     * @return
-     */
-    @PutMapping("/{id}")
-    public Vendedor updateVendedor(@PathVariable("id") Long id, @RequestBody Vendedor vendedor) {
-      return vendedorRepository.save(vendedor);
-    }
+  /**
+   * Atualiza o objeto pelo id no repository.
+   *
+   * @param id
+   * @param vendedor
+   * @return
+   */
+  @PutMapping("/{id}")
+  public Vendedor updateVendedor(@PathVariable("id") Long id, @RequestBody Vendedor vendedor) {
+    return vendedorRepository.save(vendedor);
+  }
 
-    /**
-     * Deleta a venda do repository pelo id.
-     *
-     * @param id
-     */
-    @DeleteMapping("/{id}")
-    public void deleteVendedor(@PathVariable("id") Long id) {
-      vendedorRepository.deleteById(id);
-    }
+  /**
+   * Deleta a venda do repository pelo id.
+   *
+   * @param id
+   */
+  @DeleteMapping("/{id}")
+  public void deleteVendedor(@PathVariable("id") Long id) {
+    vendedorRepository.deleteById(id);
+  }
 
 
 }

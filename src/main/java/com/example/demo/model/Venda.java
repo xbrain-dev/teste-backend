@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ public class Venda {
 
     @ManyToOne
     @NotNull
+    @JsonBackReference
     private Vendedor vendedor;
 
     public Venda() {
