@@ -11,10 +11,7 @@ public class Vendedor {
     @Id
     @GeneratedValue
     private Long id;
-
-    @Column(length = 200)
     private String nome;
-
     @Column(length = 11)
     private String cpf;
 

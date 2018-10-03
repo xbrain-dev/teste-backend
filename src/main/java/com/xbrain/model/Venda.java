@@ -1,33 +1,28 @@
 package com.xbrain.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Currency;
 
 @Entity
 public class Venda {
 
     @Id
     @GeneratedValue
-    public Long id;
-    public Timestamp dataHoraVenda;
-    public Currency valor;
-    public Long vendedorId;
+    private Long id;
 
-    @Column(length = 200)
-    public String vendedorNome;
+    @ManyToOne
+    private Vendedor vendedor;
+    private Timestamp dataHora;
+    private BigDecimal valor;
 
     public Venda() {}
 
-    public Venda(Long id, Timestamp dataHoraVenda, Currency valor, Long vendedorId, String vendedorNome) {
+    public Venda(Long id, Timestamp dataHora, BigDecimal valor, Vendedor vendedor) {
         this.id = id;
-        this.dataHoraVenda = dataHoraVenda;
+        this.dataHora = dataHora;
         this.valor = valor;
-        this.vendedorId = vendedorId;
-        this.vendedorNome = vendedorNome;
+        this.vendedor = vendedor;
     }
 
     public Long getId() {
@@ -38,35 +33,27 @@ public class Venda {
         this.id = id;
     }
 
-    public Timestamp getDataHoraVenda() {
-        return dataHoraVenda;
+    public Vendedor getVendedor() {
+        return vendedor;
     }
 
-    public void setDataHoraVenda(Timestamp dataHoraVenda) {
-        this.dataHoraVenda = dataHoraVenda;
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
     }
 
-    public Currency getValor() {
+    public Timestamp getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(Timestamp dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Currency valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
-    }
-
-    public Long getVendedorId() {
-        return vendedorId;
-    }
-
-    public void setVendedorId(Long vendedorId) {
-        this.vendedorId = vendedorId;
-    }
-
-    public String getVendedorNome() {
-        return vendedorNome;
-    }
-
-    public void setVendedorNome(String vendedorNome) {
-        this.vendedorNome = vendedorNome;
     }
 }

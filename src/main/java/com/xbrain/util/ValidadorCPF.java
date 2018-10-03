@@ -4,7 +4,12 @@ import java.util.InputMismatchException;
 
 public class ValidadorCPF {
 
-    public static boolean testar(String CPF) {
+    public static boolean validar(String CPF) {
+
+        if (CPF == null) {
+            return(false);
+        }
+
         // considera-se erro CPF's formados por uma sequencia de numeros iguais
         if (CPF.equals("00000000000") ||
                 CPF.equals("11111111111") ||
