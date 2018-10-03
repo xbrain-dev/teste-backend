@@ -6,20 +6,12 @@ import java.util.Date;
 
 public class VendedorResultadoDTO {
 
-    private Date data;
     private BigInteger id;
     private String nome;
     private String cpf;
-    private BigInteger quantidade;
-    private BigDecimal valor;
-
-    public Date getData() {
-        return data;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
-    }
+    private Date dataVendas;
+    private BigInteger quantidadeVendas;
+    private BigDecimal valorTotalVendas;
 
     public BigInteger getId() {
         return id;
@@ -45,19 +37,27 @@ public class VendedorResultadoDTO {
         this.cpf = cpf;
     }
 
-    public BigInteger getQuantidade() {
-        return quantidade;
+    public Date getDataVendas() {
+        return dataVendas;
     }
 
-    public void setQuantidade(BigInteger quantidade) {
-        this.quantidade = quantidade;
+    public void setDataVendas(Date dataVendas) {
+        this.dataVendas = dataVendas;
     }
 
-    public BigDecimal getValor() {
-        return valor;
+    public BigInteger getQuantidadeVendas() {
+        return quantidadeVendas;
     }
 
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
+    public void setQuantidadeVendas(BigInteger quantidadeVendas) {
+        this.quantidadeVendas = quantidadeVendas;
+    }
+
+    public BigDecimal getValorTotalVendas() {
+        return valorTotalVendas;
+    }
+
+    public void setValorTotalVendas(BigDecimal valorTotalVendas) {
+        this.valorTotalVendas = valorTotalVendas;
     }
 }
