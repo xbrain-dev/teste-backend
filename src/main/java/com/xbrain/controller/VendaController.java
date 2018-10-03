@@ -28,8 +28,8 @@ public class VendaController {
     }
 
     // Atualizar uma venda
-    @PutMapping
-    public Venda atualizar(@RequestBody final Venda venda) {
+    @PutMapping("/{id}")
+    public Venda atualizar(@PathVariable("id") Long id, @RequestBody final Venda venda) {
         return vendaJpaRepository.save(venda);
     }
 
