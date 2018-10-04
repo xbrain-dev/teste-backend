@@ -1,6 +1,6 @@
 package com.xbrain.controller;
 
-import com.xbrain.dto.VendedorResultadoDTO;
+import com.xbrain.dto.VendedorResumoDTO;
 import com.xbrain.model.Vendedor;
 import com.xbrain.util.ValidadorCPF;
 import com.xbrain.repository.VendedorJpaRepository;
@@ -14,9 +14,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,38 +64,50 @@ public class VendedoresController {
         vendedorJpaRepository.deleteById(id);
     }
 
-    // Ranking de vendedores diário ordenado por valor total das vendas
-    // TODO: Alterar para SqlResultSetMapping em vez de casting
+    // Resumo dos valores de venda dos vendedores por período ordenado
     @GetMapping(value = "/ranking")
-    public ArrayList<VendedorResultadoDTO> ranking(@RequestParam(value = "data") @DateTimeFormat(pattern="yyyy-MM-dd") Date data,
-                                                   @RequestParam(value = "limite", defaultValue = "10") Integer limite) {
-        ArrayList<VendedorResultadoDTO> ranking = new ArrayList<>();
+    public ArrayList<VendedorResumoDTO> ranking(@RequestParam(value = "dataInicial") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate dataInicial,
+                                                @RequestParam(value = "dataFinal") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate dataFinal,
+                                                @RequestParam(value = "limite", defaultValue = "10") Integer limite)
+                                                throws Exception {
+
+        Period periodo = Period.between(dataInicial, dataFinal);
+        Integer quantidadeDias = periodo.getDays() + 1;
+
+        if (quantidadeDias < 1) {
+            throw new Exception("Período informado é inválido.");
+        }
+
+        ArrayList<VendedorResumoDTO> ranking = new ArrayList<>();
 
         Query query = em.createNativeQuery(
                 "SELECT a.vendedor_id, b.nome, b.cpf, count(*) as quantidade, sum(a.valor) as valor\n" +
                 "FROM venda a\n" +
                 "LEFT JOIN vendedor b\n" +
-                "ON a.vendedor_id = b.id " +
-                "WHERE a.data = :data " +
+                "ON a.vendedor_id = b.id\n" +
+                "WHERE a.data >= :dataInicial AND a.data <= :dataFinal\n" +
                 "GROUP BY a.vendedor_id\n" +
                 "ORDER BY sum(a.valor) DESC LIMIT :limite");
 
-        query.setParameter("data", data);
+        query.setParameter("dataInicial", dataInicial);
+        query.setParameter("dataFinal", dataFinal);
         query.setParameter("limite", limite);
 
         List<Object[]> results = query.getResultList();
 
         results.forEach((record) -> {
-            VendedorResultadoDTO resultado = new VendedorResultadoDTO();
+            VendedorResumoDTO resumo = new VendedorResumoDTO();
 
-            resultado.setId((BigInteger)record[0]);
-            resultado.setNome((String)record[1]);
-            resultado.setCpf((String)record[2]);
-            resultado.setDataVendas(data);
-            resultado.setQuantidadeVendas((BigInteger)record[3]);
-            resultado.setValorTotalVendas((BigDecimal)record[4]);
+            resumo.setId((BigInteger)record[0]);
+            resumo.setNome((String)record[1]);
+            resumo.setCpf((String)record[2]);
+            resumo.setDataInicial(dataInicial);
+            resumo.setDataFinal(dataFinal);
+            resumo.setQuantidadeVendas((BigInteger)record[3]);
+            resumo.setValorTotalPeriodo((Double)record[4]);
+            resumo.setValorMedioDiario(resumo.getValorTotalPeriodo() / quantidadeDias.doubleValue());
 
-            ranking.add(resultado);
+            ranking.add(resumo);
         });
 
         return ranking;

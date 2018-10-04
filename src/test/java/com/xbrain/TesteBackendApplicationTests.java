@@ -13,8 +13,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TesteBackendApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,7 +46,7 @@ public class TesteBackendApplicationTests {
 
 	@Test
 	public void criarVendedorComVenda() {
-		Vendedor vendedor = new Vendedor(0L, "LUCAS DUARTE DE OLIVEIRA", "07840296955");
+		Vendedor vendedor = new Vendedor(0L, "KEYLLA CRISTINA GOMES BRANDAO", "07049519324");
 
 		ResponseEntity<Vendedor> responseVendedor = testRestTemplate.exchange(
 				criarURLComPorta("/vendedores"),
@@ -58,7 +58,7 @@ public class TesteBackendApplicationTests {
 		Assertions.assertThat(responseVendedor.getBody().getId()).isGreaterThan(0L);
 
 		vendedor = responseVendedor.getBody();
-		Venda venda = new Venda(0L, new Date(), new BigDecimal(99.90), vendedor);
+		Venda venda = new Venda(0L, LocalDate.now(),99.90d, vendedor);
 
 		ResponseEntity<Venda> responseVenda = testRestTemplate.exchange(
 				criarURLComPorta("/vendas"),
@@ -68,6 +68,21 @@ public class TesteBackendApplicationTests {
 
 		Assertions.assertThat(responseVenda.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 		Assertions.assertThat(responseVenda.getBody().getId()).isGreaterThan(0L);
+	}
+
+	@Test
+	public void buscarRankingVendedoresHoje() {
+		LocalDate dataHoje = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String dataHojeFormatada = dataHoje.format(formatter);
+
+		ResponseEntity<String> responseVendedor = testRestTemplate.exchange(
+				criarURLComPorta("/vendedores/ranking?dataInicial="+ dataHojeFormatada+"&dataFinal="+ dataHojeFormatada),
+				HttpMethod.GET,
+				new HttpEntity<>(headers),
+				String.class);
+
+		Assertions.assertThat(responseVendedor.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	private String criarURLComPorta(String uri) {

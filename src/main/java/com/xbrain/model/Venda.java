@@ -2,7 +2,7 @@ package com.xbrain.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Venda {
@@ -13,12 +13,12 @@ public class Venda {
 
     @ManyToOne
     private Vendedor vendedor;
-    private Date data;
-    private BigDecimal valor;
+    private LocalDate data;
+    private Double valor;
 
     public Venda() {}
 
-    public Venda(Long id, Date data, BigDecimal valor, Vendedor vendedor) {
+    public Venda(Long id, LocalDate data, Double valor, Vendedor vendedor) {
         this.id = id;
         this.data = data;
         this.valor = valor;
@@ -41,19 +41,19 @@ public class Venda {
         this.vendedor = vendedor;
     }
 
-    public Date getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
-    public BigDecimal getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 }
