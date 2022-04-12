@@ -1,16 +1,14 @@
 package com.xbrain.app.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class VendedorDTO {
 
     private Long id;
@@ -21,6 +19,10 @@ public class VendedorDTO {
 
     @CPF(message = "CPF invalido ou Cancelado")
     @NotBlank(message = "O campo cpf é obrigatorio.")
-    @Size(max = 11, message = "O campo deve ter no maximo {max} caracteres.")
+    @Size(max = 15, message = "O campo deve ter no maximo {max} caracteres.")
+    // Valor max=15 por conta do mascaramento que seria feito no front;
     private String cpf;
+
+    private List<VendaDTO> vendas = new ArrayList<>();
+
 }

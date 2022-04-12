@@ -1,8 +1,12 @@
 package com.xbrain.app.service;
 
+import com.xbrain.app.dto.VendaDTO;
 import com.xbrain.app.dto.VendedorDTO;
+import com.xbrain.app.exception.DataInvalidaException;
 import com.xbrain.app.exception.VendedorNaoEncontradoException;
+import com.xbrain.app.model.Venda;
 import com.xbrain.app.model.Vendedor;
+import com.xbrain.app.repository.VendaRepository;
 import com.xbrain.app.repository.VendedorRepository;
 import com.xbrain.app.util.mapper.MapperUtil;
 import com.xbrain.app.util.matcher.TypeExampleMatcher;
@@ -11,9 +15,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,13 +40,12 @@ public class VendedorService {
         return vendedorRepository.findAll(example, pageable).map(Vendedor -> mapperUtil.mapTo(Vendedor, VendedorDTO.class));
     }
 
-    public Optional<Vendedor> findById(Long id) {
-        return vendedorRepository.findById(id);
+    public Vendedor findById(Long id) {
+        return vendedorRepository.findById(id).orElseThrow(VendedorNaoEncontradoException::new);
     }
 
     public Vendedor saveVendedor(VendedorDTO vendedorDTO) {
-        return vendedorRepository
-                .save(mapperUtil.mapTo(vendedorDTO, Vendedor.class));
+        return vendedorRepository.save(mapperUtil.mapTo(vendedorDTO, Vendedor.class));
     }
 
     public VendedorDTO updateVendedor(Long id, VendedorDTO vendedorDTO) {
@@ -48,8 +56,16 @@ public class VendedorService {
         return mapperUtil.mapTo(vendedorRepository.save(vendedor), VendedorDTO.class);
     }
 
-    public void deleteVendedor(Long id) {
+    public String deleteVendedor(Long id) {
         vendedorRepository.delete(vendedorRepository.findById(id)
                 .orElseThrow(VendedorNaoEncontradoException::new));
+
+        return "Vendedor Excluido";
     }
+
+//    public List<Venda> rankingBestSellers(LocalDate fromDate,
+//                                                LocalDate toDate) {
+//
+//
+//    }
 }

@@ -1,26 +1,29 @@
 package com.xbrain.app.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class VendaDTO {
 
     private Long id;
 
-    private LocalDateTime dataVenda;
+    @NotBlank
+    private String nome;
 
+    @NotBlank
+    private BigDecimal quantidade;
+
+    private LocalDate dataVenda;
+
+    @NotBlank
     private BigDecimal valor;
 
-    @Valid
-    private VendedorDTO vendedor;
+    private BigDecimal total;
+
+    @NotBlank
+    private Long idVendedor;
 }
