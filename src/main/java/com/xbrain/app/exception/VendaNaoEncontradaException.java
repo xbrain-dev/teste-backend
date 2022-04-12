@@ -1,8 +1,8 @@
 package com.xbrain.app.exception;
 
-public class VendaNaoEncontradaException extends Exception {
+public class VendaNaoEncontradaException extends RecursoNaoEncontradoException {
 
-    public VendaNaoEncontradaException(String message) {
-        super(message);
+    public VendaNaoEncontradaException() {
+        super("Venda não encontrada!");
     }
 }

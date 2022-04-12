@@ -1,9 +1,9 @@
 package com.xbrain.app.exception;
 
 
-public class VendedorNaoEncontradoException extends Exception{
+public class VendedorNaoEncontradoException extends RecursoNaoEncontradoException {
 
-        public VendedorNaoEncontradoException(String message) {
-            super(message);
+        public VendedorNaoEncontradoException() {
+            super("Vendedor não encontrado!");
         }
 }
