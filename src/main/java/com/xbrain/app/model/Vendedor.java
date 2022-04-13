@@ -22,4 +22,6 @@ public class Vendedor {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "vendedor")
     private List<Venda> vendas = new ArrayList<>();
+
+    private Long totalVendas;
 }

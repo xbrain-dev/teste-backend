@@ -4,11 +4,13 @@ import com.xbrain.app.dto.VendedorDTO;
 import com.xbrain.app.service.VendedorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/vendedores")
@@ -27,11 +29,11 @@ public class VendedorController {
         return ResponseEntity.ok(vendedorService.findById(id));
     }
 
-    // TODO - Quando tiver tempo foque no ranking dos melhores vendedores;
+    // TODO - Descomentar após a conclusão da logica do ranking;
 
 //    @GetMapping("/ranking")
-//    public ResponseEntity<?> getRanking(@RequestParam LocalDate fromDate,
-//                                        @RequestParam LocalDate toDate) {
+//    public ResponseEntity<?> getRanking(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+//                                        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
 //        return ResponseEntity.ok(vendedorService.ranking(fromDate, toDate));
 //    }
 

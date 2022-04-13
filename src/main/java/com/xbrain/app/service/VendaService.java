@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -40,10 +41,14 @@ public class VendaService {
     }
 
     public Venda save(VendaDTO vendaDTO) {
+
         // - Fazendo o set da data no post para que não ocorra o set caso a entidade seja instanciada em outro momento;
-        vendaDTO.setDataVenda(LocalDate.now());
-        BigDecimal total = vendaDTO.getQuantidade().multiply(vendaDTO.getValor());
-        vendaDTO.setTotal(total);
+        vendaDTO.setDataVenda(LocalDate.now().plusMonths(2));
+
+        // - Ja faz os calculo total da venda de acordo com a quantidade e preço;
+        //-----------------------------------------------------------------------
+        // TODO - Resolver pequeno bug na hora da multiplicação;
+        vendaDTO.setTotal(total(vendaDTO.getQuantidade(), vendaDTO.getQuantidade()));
         return vendaRepository.save(mapperUtil.mapTo(vendaDTO, Venda.class));
     }
 
@@ -60,5 +65,9 @@ public class VendaService {
                 .orElseThrow(VendaNaoEncontradaException::new));
 
         return "Venda Excluida";
+    }
+
+    BigDecimal total(BigDecimal valor, BigDecimal quantidade) {
+        return quantidade.multiply(valor);
     }
 }

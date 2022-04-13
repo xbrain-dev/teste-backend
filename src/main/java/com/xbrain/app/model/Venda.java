@@ -13,9 +13,9 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@Table
 @AllArgsConstructor
 @NoArgsConstructor
+@Table
 public class Venda {
 
     @Id
