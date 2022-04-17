@@ -21,22 +21,22 @@ public class Venda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
-    private BigDecimal quantidade;
-    private LocalDate dataVenda;
-    private BigDecimal valor;
-    private BigDecimal total;
+    private String nomeProduto;
+    private BigDecimal quantidade;// quantidade de produtos
+    private LocalDate dataVenda = LocalDate.now();
+    private BigDecimal valor;// valor do produto
+    private BigDecimal valorTotal; //Valor total da venda
 
     @Column(name = "vendedor_id")
     private Long idVendedor;
 
-    @JsonIgnore
+    @JsonIgnore // - Json Ignore para que no get ele não entre em loop;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendedor_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Vendedor vendedor;
 
     @PrePersist
-    private void prePersist() {
+    private void prePersist() { // - Mapeamento duplo da entidade Vendedor;
         if(this.vendedor != null && this.idVendedor == null)
             this.idVendedor = this.vendedor.getId();
     }

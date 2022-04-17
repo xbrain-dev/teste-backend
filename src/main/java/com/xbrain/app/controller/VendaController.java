@@ -33,8 +33,7 @@ public class VendaController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> updVenda(@PathVariable Long id,
-                                      @RequestBody VendaDTO vendaDTO) {
+    public ResponseEntity<?> updVenda(@PathVariable Long id, @RequestBody VendaDTO vendaDTO) {
         return ResponseEntity.ok(vendaService.update(id, vendaDTO));
     }
 

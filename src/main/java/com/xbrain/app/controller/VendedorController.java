@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.Date;
 
 @RestController
-@RequestMapping("/api/vendedores")
 @RequiredArgsConstructor
+@RequestMapping("/api/vendedores")
 public class VendedorController {
 
     private final VendedorService vendedorService;
@@ -29,13 +28,11 @@ public class VendedorController {
         return ResponseEntity.ok(vendedorService.findById(id));
     }
 
-    // TODO - Descomentar após a conclusão da logica do ranking;
-
-//    @GetMapping("/ranking")
-//    public ResponseEntity<?> getRanking(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
-//                                        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
-//        return ResponseEntity.ok(vendedorService.ranking(fromDate, toDate));
-//    }
+    @GetMapping("/ranking")
+    public ResponseEntity<?> getRanking(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+                                        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
+        return ResponseEntity.ok(vendedorService.ranking(fromDate, toDate));
+    }
 
     @PostMapping
     public ResponseEntity<?> addV(@RequestBody @Valid VendedorDTO vendedorDTO) {

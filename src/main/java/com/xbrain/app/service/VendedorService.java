@@ -1,13 +1,9 @@
 package com.xbrain.app.service;
 
-import com.xbrain.app.dto.VendaDTO;
 import com.xbrain.app.dto.VendedorDTO;
 import com.xbrain.app.exception.DataInvalidaException;
-import com.xbrain.app.exception.VendaNaoEncontradaException;
 import com.xbrain.app.exception.VendedorNaoEncontradoException;
-import com.xbrain.app.model.Venda;
 import com.xbrain.app.model.Vendedor;
-import com.xbrain.app.repository.VendaRepository;
 import com.xbrain.app.repository.VendedorRepository;
 import com.xbrain.app.util.mapper.MapperUtil;
 import com.xbrain.app.util.matcher.TypeExampleMatcher;
@@ -16,18 +12,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -35,10 +26,9 @@ import java.util.stream.Collectors;
 public class VendedorService {
 
     private final VendedorRepository vendedorRepository;
-    private final VendaRepository vendaRepository;
     private final MapperUtil mapperUtil;
 
-    // - LOGICA PARA A REALIZACAO DO GET DE TODOS OS VENDEDORES;
+    // - LOGICA PARA A REALIZACAO DO GET DE TODOS OS VENDEDORES JÁ COM PAGINAÇÃO;
     public Page<VendedorDTO> getAll(VendedorDTO vendedorDTO, Pageable pageable) {
         var example = Example.of(mapperUtil.mapTo(vendedorDTO, Vendedor.class),
                 new TypeExampleMatcher().exampleMatcherMatchingAny());
@@ -47,16 +37,35 @@ public class VendedorService {
     }
 
     // - LOGICA PARA REALIZACAO DO GET BY ID DO VENDEDOR;
-    public Vendedor findById(Long id) {
-        return vendedorRepository.findById(id).orElseThrow(VendedorNaoEncontradoException::new);
+    public VendedorDTO findById(Long id) {
+        return mapperUtil.mapTo(vendedorRepository.findById(id).orElseThrow(VendedorNaoEncontradoException::new), VendedorDTO.class);
+    }
+
+    // - LOGICA PARA A REALIZAÇÃO DO GET DO RANKING;
+    public List<Vendedor> ranking(LocalDate fromDate, LocalDate toDate) {
+
+        if (fromDate.isAfter(LocalDate.now()))
+            throw new DataInvalidaException("Data não é valida");
+
+        Period period = Period.between(fromDate, toDate);
+        BigDecimal days = BigDecimal.valueOf(period.getDays());
+
+        List<Vendedor> vendedors = vendedorRepository.findAllBySellDateBetween(fromDate, toDate);
+
+        vendedors.removeIf(v -> v.getVendas().isEmpty());
+        for(Vendedor v : vendedors)
+            v.setMediaDeVendas(v.getValorTotalDeVendas().divide(days, BigDecimal.ROUND_UP));
+
+        return vendedors;
     }
 
     // - LOGICA PARA A REALIZACAO DO POST DO VENDEDOR;
-    public Vendedor saveVendedor(VendedorDTO vendedorDTO) {
-        return vendedorRepository.save(mapperUtil.mapTo(vendedorDTO, Vendedor.class));
+    public VendedorDTO saveVendedor(VendedorDTO vendedorDTO) {
+        vendedorRepository.save(mapperUtil.mapTo(vendedorDTO, Vendedor.class));
+        return vendedorDTO;
     }
 
-    // - LOGICA PARA A REALIZACAI DO UPDATE DO VENDEDOR;
+    // - LOGICA PARA A REALIZACAO DO UPDATE DO VENDEDOR;
     public VendedorDTO updateVendedor(Long id, VendedorDTO vendedorDTO) {
         Vendedor vendedor = vendedorRepository.findById(id)
                 .orElseThrow(VendedorNaoEncontradoException::new);
@@ -73,22 +82,4 @@ public class VendedorService {
         return "Vendedor Excluido";
     }
 
-
-//  TODO - Continuar logica do ranking e realizar o retorno dos 10 melhores e realizar a media diaria;
-
-//    // - Logica do ranking - usando fromDate e toDate como parametros para buscar no banco;
-//    public List<VendedorDTO> ranking(LocalDate fromDate, LocalDate toDate) {
-//
-//        boolean wrongDate = fromDate.isAfter(toDate);
-//        if(wrongDate) // - Verificando se as datas estão corretas;
-//           throw new DataInvalidaException("Data invalida");
-//
-//        Period period = Period.between(fromDate, toDate);
-//        int days = period.getDays();
-//
-//        List<Venda> sellList = vendaRepository.findAllByDataVendaBetween(fromDate, toDate);
-//
-//        if(sellList.isEmpty())
-//            throw new VendaNaoEncontradaException();
-//    }
 }
