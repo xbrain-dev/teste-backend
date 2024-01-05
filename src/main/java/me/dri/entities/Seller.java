@@ -3,6 +3,7 @@ package me.dri.entities;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.Objects;
 
 @Document(collection = "sellers")
@@ -12,15 +13,17 @@ public class Seller {
     private String id;
     private String name;
 
+    private  List<Sell> sells;
+
     public Seller() {
 
     }
+
 
     public Seller(String id, String name) {
         this.id = id;
         this.name = name;
     }
-
 
     public String getId() {
         return id;
@@ -32,6 +35,15 @@ public class Seller {
 
     public String getName() {
         return name;
+    }
+
+
+    public List<Sell> getSells() {
+        return sells;
+    }
+
+    public void setSells(List<Sell> sells) {
+        this.sells = sells;
     }
 
     @Override
