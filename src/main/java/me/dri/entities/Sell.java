@@ -1,25 +1,26 @@
 package me.dri.entities;
 
 
+import org.springframework.data.annotation.Id;
+
 import java.util.Date;
 
 public class Sell {
 
 
+    @Id
     private String id;
     private Date date;
     private Double value;
-    private Seller seller;
 
     public Sell() {
 
     }
 
-    public Sell(String id, Date date, Double value, Seller seller) {
+    public Sell(String id, Date date, Double value) {
         this.id = id;
         this.date = date;
         this.value = value;
-        this.seller = seller;
     }
 
     public String getId() {
@@ -44,13 +45,5 @@ public class Sell {
 
     public void setValue(Double value) {
         this.value = value;
-    }
-
-    public Seller getSeller() {
-        return seller;
-    }
-
-    public void setSeller(Seller seller) {
-        this.seller = seller;
     }
 }

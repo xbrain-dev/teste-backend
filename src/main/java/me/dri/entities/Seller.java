@@ -12,7 +12,6 @@ public class Seller {
     @Id
     private String id;
     private String name;
-
     private  List<Sell> sells;
 
     public Seller() {
@@ -23,6 +22,12 @@ public class Seller {
     public Seller(String id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Seller(String id, String name, List<Sell> sells) {
+        this.id = id;
+        this.name = name;
+        this.sells = sells;
     }
 
     public String getId() {
@@ -68,6 +73,7 @@ public class Seller {
         return "Seller{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", sells=" + sells +
                 '}';
     }
 }

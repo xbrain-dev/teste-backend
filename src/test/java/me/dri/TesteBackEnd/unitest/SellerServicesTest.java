@@ -3,6 +3,8 @@ package me.dri.TesteBackEnd.unitest;
 import me.dri.entities.Sell;
 import me.dri.entities.Seller;
 import me.dri.entities.dto.SellDTO;
+import me.dri.entities.dto.SellerDTO;
+import me.dri.exceptions.NotFoundSellerByName;
 import me.dri.repositories.SellerRepository;
 import me.dri.services.SellerServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SellerServicesTest {
 
     @Mock
@@ -34,11 +37,12 @@ public class SellerServicesTest {
 
     @Test
     void testInsertDocument() {
-        Seller sellerInsert = new Seller(null, "Diego");
+        SellerDTO sellerDTO = new SellerDTO("Diego");
+        Seller sellerInsert = new Seller("123", "Diego");
         Seller sellerInserted = new Seller("id123", "Diego");
 
         when(this.repository.insert(sellerInsert)).thenReturn(sellerInserted);
-        var resultInsert = this.service.insertSeller(sellerInsert);
+        var resultInsert = this.service.insertSeller(sellerDTO);
 
         assertNotNull(resultInsert);
         assertEquals(sellerInserted.getId(), resultInsert);
@@ -49,11 +53,20 @@ public class SellerServicesTest {
         Date dateNow = new Date();
         Double valueOfSell = 200.0;
         Seller seller = new Seller("id123", "Diego");
-        SellDTO sellDTO = new SellDTO(dateNow, valueOfSell, seller.getName());
-        Sell sellInsert = new Sell(null, sellDTO.date(), sellDTO.value(), seller);
+        SellerDTO sellerTest = new SellerDTO("diego");
+        SellDTO sellDTO = new SellDTO(dateNow, valueOfSell, sellerTest.sellerName());
+        Sell sellInsert = new Sell(null, sellDTO.date(), sellDTO.value());
         when(this.repository.findByName(seller.getName())).thenReturn(Optional.of(seller));
         seller.setSells(List.of(sellInsert));
         when(this.repository.insert(seller)).thenReturn(seller);
-        this.service.sell(sellDTO);
+        this.service.toSell(sellDTO);
+    }
+
+    @Test
+    void testExceptionNotFoundSellerInSellMethod() {
+        SellerDTO sellerTest = new SellerDTO("diego");
+        SellDTO sellDTO = new SellDTO(new Date(), 200.0, sellerTest.sellerName());
+        when(this.repository.findByName(sellerTest.sellerName())).thenReturn(Optional.empty());
+        assertThrows(NotFoundSellerByName.class, () -> this.service.toSell(sellDTO));
     }
 }
