@@ -1,4 +1,4 @@
 package me.dri.entities.dto;
 
-public record BestSellersDTO(SellerDTO seller, Integer amountSells, Double averageSellsDaily) {
+public record BestSellersDTO(String seller, double average) {
 }

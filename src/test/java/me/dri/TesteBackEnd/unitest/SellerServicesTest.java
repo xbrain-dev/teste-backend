@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -94,5 +95,31 @@ public class SellerServicesTest {
         assertEquals(200.0, resultSellResponseDTO.sellDto().value());
         assertEquals(1, resultSellResponseDTO.amountSells());
     }
+
+    @Test
+    void testBestSellersOfWeekend() {
+        List<Seller> sellers = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            Seller seller = new Seller("id" + i, "Diego" + i);
+            sellers.add(seller);
+        }
+        for (int j = 0; j < 20; j++) {
+            double value = 0.0;
+            if (sellers.get(j).getName().equals("Diego1")) {
+                value = 400.0;
+            } else {
+                value = 100.0;
+            }
+            Sell sell = new Sell(new Date(), value + 1, sellers.get(j));
+            sellers.get(j).addSell(sell);
+        }
+        when(this.repository.findAll()).thenReturn(sellers);
+        var resultBest10 = this.service.bestSellersWeekend();
+        assertEquals(10, resultBest10.size());
+        assertTrue(resultBest10.stream().anyMatch(dto -> dto.seller().equals("Diego1")));
+        assertTrue(resultBest10.stream().anyMatch(dto -> dto.seller().equals("Diego2")));
+    }
+
+
 
 }

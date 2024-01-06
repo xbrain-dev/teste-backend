@@ -23,6 +23,8 @@ public class Seller {
     public Seller(String id, String name) {
         this.id = id;
         this.name = name;
+        this.sells = new ArrayList<>();
+
     }
 
     public Seller(String id, String name, List<Sell> sells) {
