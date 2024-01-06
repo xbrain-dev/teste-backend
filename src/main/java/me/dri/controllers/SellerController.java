@@ -3,6 +3,7 @@ package me.dri.controllers;
 
 import me.dri.entities.Seller;
 import me.dri.entities.dto.SellerDTO;
+import me.dri.entities.dto.SellerResponseDTO;
 import me.dri.services.SellerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,11 +21,11 @@ public class SellerController {
     }
 
     @PostMapping
-    ResponseEntity<String> create(@RequestBody SellerDTO sellerDTO) {
+    ResponseEntity<SellerResponseDTO> create(@RequestBody SellerDTO sellerDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.service.insertSeller(sellerDTO));
     }
     @GetMapping("/{sellerName}")
-    ResponseEntity<Seller> findSellerByName(@PathVariable String sellerName) {
+    ResponseEntity<SellerResponseDTO> findSellerByName(@PathVariable String sellerName) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.service.findSellerByName(sellerName));
     }
 

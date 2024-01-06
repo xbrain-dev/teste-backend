@@ -1,4 +1,4 @@
 package me.dri.entities.dto;
 
-public record SellResponseDTO(SellDTO sellDto, String sellerName, Integer amountSells) {
+public record SellResponseDTO(SellDTO sellDto,  Integer amountSells) {
 }

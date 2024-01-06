@@ -3,6 +3,7 @@ package me.dri.entities;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ public class Seller {
     private  List<Sell> sells;
 
     public Seller() {
-
+        this.sells = new ArrayList<>();
     }
 
 
@@ -47,8 +48,8 @@ public class Seller {
         return sells;
     }
 
-    public void setSells(List<Sell> sells) {
-        this.sells = sells;
+    public void addSell(Sell sell) {
+        this.sells.add(sell);
     }
 
     @Override
